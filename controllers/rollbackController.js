@@ -5,6 +5,15 @@ const { rollback } = require("../services/rollbackService");
 const rollbackController = async (req, res) => {
   const { deposit_id } = req.body;
   const { _id: userId } = req.user;
+  const { "x-token": tokenH } = req.headers;
+  const findUser = await User.findOne({ _id: userId });
+
+  if (tokenH !== findUser.token) {
+    return res.status(401).json({
+      message: "unauthorized",
+      description: "Not successful, invalid token",
+    });
+  }
 
   if (!(await Deposit.findOne({ deposit_id: deposit_id }))) {
     return res.status(400).json({
@@ -12,7 +21,7 @@ const rollbackController = async (req, res) => {
       description: "Not successful, invalid deposit",
     });
   }
-  if (!(await User.findOne({ _id: userId }))) {
+  if (!findUser) {
     return res.status(400).json({
       message: "error",
       description: "Not successful, unknown error",

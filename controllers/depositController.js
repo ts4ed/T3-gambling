@@ -4,8 +4,17 @@ const { ObjectId } = require("mongodb");
 
 const depositController = async (req, res) => {
   const { username, amount } = req.body;
+  const { "x-token": tokenH } = req.headers;
   const { _id: userId } = req.user;
   const findUser = await User.findOne({ username: username, _id: userId });
+
+  if (tokenH !== findUser.token) {
+    return res.status(401).json({
+      message: "unauthorized",
+      description: "Not successful, invalid token",
+    });
+  }
+
   if (!findUser) {
     return res.status(401).json({
       message: "error",

@@ -4,6 +4,7 @@ const { createGame, buyGame } = require("../services/gameService");
 
 const createGameController = async (req, res) => {
   const { name, title, price } = req.body;
+  const { _id: userId } = req.user;
 
   if (await Game.findOne({ name: name })) {
     return res.status(401).json({
@@ -18,6 +19,7 @@ const createGameController = async (req, res) => {
 
 const buyGameController = async (req, res) => {
   const { game_id, username } = req.body;
+  const { "x-token": tokenH } = req.headers;
   const { _id: userId } = req.user;
   const findGame = await Game.findOne({ _id: game_id });
   const findUser = await User.findOne({ username: username, _id: userId });
@@ -40,6 +42,13 @@ const buyGameController = async (req, res) => {
     return res.status(401).json({
       message: "insufficient_funds",
       description: "Not successful, insufficient funds",
+    });
+  }
+
+  if (tokenH !== findUser.token) {
+    return res.status(401).json({
+      message: "unauthorized",
+      description: "Not successful, invalid token",
     });
   }
 
