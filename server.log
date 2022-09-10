@@ -28,3 +28,11 @@ POST /game/buy 10-09-2022_08:50:29
 POST /game/create 10-09-2022_08:50:42
 POST /game/buy 10-09-2022_08:50:48
 POST /game/buy 10-09-2022_08:50:52
+GET /token/ 10-09-2022_08:52:56
+POST /deposit 10-09-2022_08:53:16
+POST /deposit 10-09-2022_08:54:03
+POST /deposit 10-09-2022_08:54:14
+POST /deposit 10-09-2022_08:54:20
+POST /deposit 10-09-2022_08:54:25
+GET /rollback 10-09-2022_08:54:33
+GET /rollback 10-09-2022_08:54:48

@@ -8,17 +8,17 @@ const depositController = async (req, res) => {
   const { _id: userId } = req.user;
   const findUser = await User.findOne({ username: username, _id: userId });
 
-  if (tokenH !== findUser.token) {
-    return res.status(401).json({
-      message: "unauthorized",
-      description: "Not successful, invalid token",
-    });
-  }
-
   if (!findUser) {
     return res.status(401).json({
       message: "error",
       description: `Not successful, you can only take a deposit in your name`,
+    });
+  }
+
+  if (tokenH !== findUser.token) {
+    return res.status(401).json({
+      message: "unauthorized",
+      description: "Not successful, invalid token",
     });
   }
 
